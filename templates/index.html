@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #b3d9ff, #e6f3ff);
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            width: 450px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+            border: 3px solid #cfe8ff;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 30px;
+            color: #1f4e79;
+            font-weight: 600;
+        }
+        .subtitle {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 15px;
+            color: #4a4a4a;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 6px;
+            margin-bottom: 18px;
+            border-radius: 10px;
+            border: 2px solid #c6e0ff;
+            font-size: 14px;
+            background: #f7fbff;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #1f4e79;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        button:hover {
+            background: #163a5c;
+        }
+        .icons {
+            text-align: center;
+            font-size: 26px;
+            margin-bottom: 10px;
+            color: #1f4e79;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="icons">💸📘💙</div>
+        <h1>Finance Learning App</h1>
+        <div class="subtitle">Learn money skills in a simple, gentle way.</div>
+
+        <form action="/start" method="POST">
+            <label>Your finance situation:</label>
+            <input type="text" name="u1" required>
+
+            <label>Your debt situation:</label>
+            <input type="text" name="u2" required>
+
+            <label>How you save/manage money:</label>
+            <input type="text" name="u3" required>
+
+            <label>Monthly income:</label>
+            <input type="text" name="u4" required>
+
+            <label>Your goals using this app:</label>
+            <input type="text" name="u5" required>
+
+            <button type="submit">Start Learning</button>
+        </form>
+    </div>
+</body>
+</html>
