@@ -1,92 +1,283 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #b3d9ff, #e6f3ff);
-            margin: 0;
-            padding: 40px;
-            display: flex;
-            justify-content: center;
-        }
-        .card {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            width: 450px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-            border: 3px solid #cfe8ff;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 10px;
-            font-size: 30px;
-            color: #1f4e79;
-            font-weight: 600;
-        }
-        .subtitle {
-            text-align: center;
-            margin-bottom: 25px;
-            font-size: 15px;
-            color: #4a4a4a;
-        }
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-top: 6px;
-            margin-bottom: 18px;
-            border-radius: 10px;
-            border: 2px solid #c6e0ff;
-            font-size: 14px;
-            background: #f7fbff;
-        }
-        button {
-            width: 100%;
-            padding: 14px;
-            background: #1f4e79;
-            color: white;
-            font-size: 16px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        button:hover {
-            background: #163a5c;
-        }
-        .icons {
-            text-align: center;
-            font-size: 26px;
-            margin-bottom: 10px;
-            color: #1f4e79;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finance Learning Chat</title>
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #b3d9ff, #e6f3ff);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #1f4e79;
+    color: white;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    font-size: 1.8em;
+}
+
+.container {
+    width: 95%;
+    max-width: 500px;
+    margin-top: 20px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.icons {
+    text-align: center;
+    font-size: 30px;
+    color: #1f4e79;
+    margin-bottom: 15px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #1f4e79;
+}
+
+.subtitle {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #4a4a4a;
+}
+
+/* Input form */
+.input-form input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    margin-bottom: 18px;
+    border-radius: 10px;
+    border: 2px solid #c6e0ff;
+    font-size: 14px;
+    background: #f7fbff;
+    outline: none;
+    transition: all 0.3s ease;
+}
+.input-form input:focus {
+    border-color: #1f4e79;
+    transform: scale(1.02);
+}
+
+.input-form button {
+    width: 100%;
+    padding: 14px;
+    background: #1f4e79;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.input-form button:hover {
+    background: #163a5c;
+    transform: scale(1.02);
+}
+
+/* Chat interface */
+.chat-container {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.bubble {
+    max-width: 75%;
+    padding: 14px 20px;
+    border-radius: 18px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideIn 0.5s forwards;
+}
+
+.user-bubble {
+    background: #c3e8ff;
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+}
+
+.teacher-bubble {
+    background: #ffffff;
+    align-self: flex-start;
+    border-bottom-left-radius: 0;
+}
+.teacher-bubble::before {
+    content: "📘 Teacher";
+    display: block;
+    font-size: 0.85em;
+    color: #6c8cd5;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+.teacher-bubble strong {
+    display: block;
+    margin-top: 8px;
+    margin-bottom: 4px;
+    font-size: 1.05em;
+}
+.teacher-bubble em {
+    color: #6c8cd5;
+    font-style: normal;
+    font-weight: bold;
+}
+
+/* Chat input */
+.chat-input-form {
+    display: flex;
+    margin-top: 10px;
+}
+.chat-input-form input {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    outline: none;
+    transition: all 0.3s ease;
+}
+.chat-input-form input:focus {
+    border-color: #6c8cd5;
+    transform: scale(1.02);
+}
+.chat-input-form button {
+    margin-left: 12px;
+    padding: 12px 20px;
+    background-color: #6c8cd5;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.chat-input-form button:hover {
+    background-color: #547ac4;
+    transform: scale(1.02);
+}
+
+/* Animation */
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
 </head>
 <body>
-    <div class="card">
-        <div class="icons">💸📘💙</div>
-        <h1>Finance Learning App</h1>
-        <div class="subtitle">Learn money skills in a simple, gentle way.</div>
-
-        <form action="/start" method="POST">
-            <label>Your finance situation:</label>
-            <input type="text" name="u1" required>
-
-            <label>Your debt situation:</label>
-            <input type="text" name="u2" required>
-
-            <label>How you save/manage money:</label>
-            <input type="text" name="u3" required>
-
-            <label>Monthly income:</label>
-            <input type="text" name="u4" required>
-
-            <label>Your goals using this app:</label>
-            <input type="text" name="u5" required>
-
-            <button type="submit">Start Learning</button>
-        </form>
+<header>
+    <div style="display: flex; align-items: center; justify-content: flex-start;">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Finance App Logo" style="width:60px; height:auto; margin-right:15px;">
+        <span style="font-size: 1.8em;">Finance Learning Chat</span>
     </div>
+</header>
+
+
+<div class="container">
+    <div class="icons">💸📘💙</div>
+    <h1>Finance Learning App</h1>
+    <div class="subtitle">Learn money skills in a simple, gentle way.</div>
+
+    <!-- Start Form -->
+    <form id="start-form" class="input-form">
+        <input type="text" name="u1" placeholder="Your finance situation" required>
+        <input type="text" name="u2" placeholder="Your debt situation" required>
+        <input type="text" name="u3" placeholder="How you save/manage money" required>
+        <input type="text" name="u4" placeholder="Monthly income" required>
+        <input type="text" name="u5" placeholder="Your goals using this app" required>
+        <button type="submit">Start Learning</button>
+    </form>
+
+    <!-- Chat Interface -->
+    <div class="chat-container" id="chat-container">
+        <main id="chat-messages"></main>
+        <form id="chat-form" class="chat-input-form">
+            <input type="text" name="message" placeholder="Type your message..." required autocomplete="off">
+            <button type="submit">Send</button>
+        </form>
+        <button id="clear-chat" style="margin-top:10px; padding:10px; border:none; border-radius:10px; background:#ff6b6b; color:white; cursor:pointer;">Clear Chat</button>
+    </div>
+</div>
+
+<script>
+const startForm = document.getElementById('start-form');
+const chatContainer = document.getElementById('chat-container');
+const chatMessages = document.getElementById('chat-messages');
+const chatForm = document.getElementById('chat-form');
+const clearBtn = document.getElementById('clear-chat');
+
+function addMessage(content, role='assistant') {
+    const div = document.createElement('div');
+    div.className = 'bubble ' + (role==='user'?'user-bubble':'teacher-bubble');
+    div.innerHTML = content;
+    chatMessages.appendChild(div);
+    div.scrollIntoView({behavior: "smooth"});
+}
+
+startForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const formData = new FormData(startForm);
+    const jsonData = Object.fromEntries(formData.entries());
+
+    // Hide start form, show chat
+    startForm.style.display = 'none';
+    chatContainer.style.display = 'flex';
+
+    // Send to Flask
+    const res = await fetch('/start_chat', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(jsonData)
+    });
+    const data = await res.json();
+    addMessage(data.reply, 'assistant');
+});
+
+chatForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const input = chatForm.querySelector('input');
+    const message = input.value;
+    input.value = '';
+    addMessage(message, 'user');
+
+    const res = await fetch('/send_message', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({message})
+    });
+    const data = await res.json();
+    addMessage(data.reply, 'assistant');
+});
+
+clearBtn.addEventListener('click', async ()=>{
+    await fetch('/clear', {method:'POST'});
+    chatMessages.innerHTML = '';
+    chatContainer.style.display = 'none';
+    startForm.style.display = 'flex';
+});
+</script>
+
 </body>
 </html>

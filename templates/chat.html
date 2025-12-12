@@ -1,103 +1,175 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <title>Finance Teacher Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        /* General Body */
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #b3d9ff, #e6f3ff);
+            font-family: "Poppins", Arial, sans-serif;
+            background-color: #eef2f7;
             margin: 0;
-            padding: 30px;
+            padding: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            height: 100vh;
         }
-        .container {
-            display: flex;
-            width: 900px;
-            background: white;
-            border-radius: 18px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-            border: 3px solid #cfe8ff;
-            overflow: hidden;
-        }
-        .teacher, .user {
-            flex: 1;
-            padding: 25px;
-            height: 600px;
-            overflow-y: auto;
-        }
-        .teacher {
-            background: #f5faff;
-            border-right: 2px solid #d9ebff;
-        }
-        .user {
-            background: #e6f3ff;
-        }
-        h2 {
+
+        /* Header */
+        header {
+            background-color: #6c8cd5;
+            color: white;
             text-align: center;
-            color: #1f4e79;
-            margin-bottom: 20px;
+            padding: 18px;
+            font-size: 1.6em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
-        .message-box {
-            background: white;
-            padding: 12px;
+
+        /* Chat area */
+        main {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Message bubbles */
+        .bubble {
+            max-width: 75%;
+            padding: 14px 20px;
+            border-radius: 18px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            position: relative;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .user-bubble {
+            background: #c3e8ff;
+            color: #000;
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+        }
+
+        .teacher-bubble {
+            background: #ffffff;
+            color: #000;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+        }
+
+        /* Optional teacher badge */
+        .teacher-bubble::before {
+            content: "📘 Teacher";
+            display: block;
+            font-size: 0.85em;
+            color: #6c8cd5;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        /* Menu styling */
+        .menu {
+            background: #f0f4fd;
+            padding: 8px 12px;
             border-radius: 12px;
-            border: 1px solid #c6e0ff;
-            margin-bottom: 15px;
+            font-size: 0.95em;
+            margin-bottom: 6px;
+            color: #333;
         }
-        .message-box b {
-            color: #1f4e79;
+
+        /* Headings and emphasis */
+        .teacher-bubble strong {
+            display: block;
+            margin-top: 8px;
+            margin-bottom: 4px;
+            font-size: 1.05em;
         }
+
+        .teacher-bubble em {
+            color: #6c8cd5;
+            font-style: normal;
+            font-weight: bold;
+        }
+
+        /* Input area */
         form {
             display: flex;
-            margin-top: 10px;
+            padding: 12px 18px;
+            background-color: #ffffff;
+            border-top: 1px solid #ddd;
         }
-        input {
+
+        input[type="text"] {
             flex: 1;
-            padding: 10px;
-            border-radius: 10px;
-            border: 2px solid #c6e0ff;
-            margin-right: 10px;
-            font-size: 14px;
+            padding: 12px 16px;
+            border-radius: 25px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+            outline: none;
         }
+
+        input[type="text"]:focus {
+            border-color: #6c8cd5;
+        }
+
         button {
-            padding: 10px 18px;
-            border: none;
-            border-radius: 10px;
-            background: #1f4e79;
+            margin-left: 12px;
+            padding: 12px 20px;
+            background-color: #6c8cd5;
             color: white;
-            font-weight: 600;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
             cursor: pointer;
+            transition: 0.2s;
         }
+
         button:hover {
-            background: #163a5c;
+            background-color: #547ac4;
+        }
+
+        /* Scrollbar styling */
+        main::-webkit-scrollbar {
+            width: 8px;
+        }
+        main::-webkit-scrollbar-thumb {
+            background-color: #b0b0b0;
+            border-radius: 4px;
+        }
+        main::-webkit-scrollbar-track {
+            background-color: #eef2f7;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="teacher">
-            <h2>Teacher</h2>
-            <div class="message-box"><b>Teacher:</b><br>Welcome! I will guide you through your finance learning session.</div>
-            {% for msg in history %}
-                {% if msg.role == 'assistant' %}
-                    <div class="message-box"><b>Teacher:</b><br>{{ msg.content }}</div>
-                {% endif %}
-            {% endfor %}
-        </div>
+    <header>Finance Teacher Chat</header>
 
-        <div class="user">
-            <h2>You</h2>
-            {% for msg in history %}
-                {% if msg.role == 'user' %}
-                    <div class="message-box"><b>You:</b><br>{{ msg.content }}</div>
-                {% endif %}
-            {% endfor %}
+    <main id="chat-container">
+        {% for message in history %}
+            {% if message.role == 'user' %}
+                <div class="bubble user-bubble">{{ message.content }}</div>
+            {% elif message.role == 'assistant' %}
+                <div class="bubble teacher-bubble">
+                    {{ message.content | safe }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </main>
 
-            <form action="/message" method="POST">
-                <input type="text" name="message" placeholder="Type your question here..." required>
-                <button type="submit">Send</button>
-            </form>
-        </div>
-    </div>
+    <form action="{{ url_for('message') }}" method="POST">
+        <input type="text" name="message" placeholder="Type your message..." required autocomplete="off">
+        <button type="submit">Send</button>
+    </form>
+
+    <script>
+        // Auto-scroll to bottom
+        const chatContainer = document.getElementById('chat-container');
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    </script>
 </body>
 </html>

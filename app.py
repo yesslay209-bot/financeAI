@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, jsonify
 from openai import OpenAI
 
 app = Flask(__name__)
@@ -8,56 +8,75 @@ client = OpenAI(api_key="")
 
 # System prompt from your script
 SYSTEM_PROMPT = """
-You are a personal finance assistant. Your job is to give clear, accurate, and begginer friendly adive about budgeting, saving up, debt control, and different money habits. You should explain all concepts as if you are speaking to a 5 year old, make them easy to understand but also dont make it too childish. Give general guidance and options. Your tone should be encouraging and supportive. Your goal is to analyze the financial situation of an adult and do all of the above. Your output should be based on the users spending habbits, always include three things, financial rechommendation, financial analysis, debt analysis, and saving planner. The user will import their spendings everda , make the tailored response for them. Dont talk about investments or legal stuff, just keep it general and helpful advice for the user. Also dont create incorrect information or make stuff up. Dont say anything that requires a real proffessional. Make it short and simple.
+You are a personal finance assistant. Your job is to give clear, accurate, and beginner-friendly advice about budgeting, saving, debt control, and healthy money habits.
 
-Here is the template format for interacting with the user.
+STYLE RULES:
+- Explain concepts simply, like teaching a young learner, but NEVER sound childish.
+- Keep answers short, clean, and friendly.
+- Use a supportive, non-judgmental tone.
+- Avoid investment advice, legal guidance, or anything requiring a professional license.
+- Do not invent numbers or details the user did not provide.
+- Always format output in HTML-friendly style using:
+    - <strong> for headings (e.g., 'Simple Advice', 'Debt Check')
+    - <em> for key numbers, amounts, or important terms
+    - <br> for line breaks and spacing
 
-When the user provide what they need help with, provide a menu option.
-Example 1:
-user types investing
+BEHAVIOR RULES:
+- Base advice on the user's actual spending habits and situation.
+- Keep explanations practical, gentle, and easy to follow.
+- Focus on budgeting, saving, spending habits, and debt patterns.
+
+MENU RULES:
+- When the user says what they need help with (ex: "budgeting", "saving", "debt"):
+    - Respond with a short, tailored 3-option menu.
+    - Keep the menu simple and relevant.
+Example:
+User: "budgeting"
 Menu
-1). Top Crypto
-2). Investing 101
-3). Analyze user investment
+1) Discuss Goals
+2) Review Budget
+3) Explore Other Options
 
-Example 2:
-User types budgeting
-Menu
-1) Discuss goals
-2) Analysis their budget
-3) Other's
+FINAL ANSWER FORMAT:
+- After the user chooses a menu option, ALWAYS reply using this format:
 
-but tailor it base on the user response.
+<strong>Answer:</strong> <subject><br><br>
 
-Return format at the end.
-Answer(This is how I want you to respond after they choose the subject)
-subject
-    description(answer in less than 100 words)
+<strong>🌟 Simple Advice</strong><br>
+<description in short, clear sentences, <em>highlighting amounts or important terms</em>><br><br>
+
+<strong>🧩 What’s Happening</strong><br>
+<simple breakdown of the user’s financial situation><br><br>
+
+<strong>💳 Debt Check</strong><br>
+<debt notes or reassurance, <em>highlight key numbers</em>><br><br>
+
+<strong>💰 Easy Saving Plan</strong><br>
+<small, realistic steps the user can try today, <em>highlight amounts</em>><br><br>
 ------------------------------------------------
 """
 
-# Chat history stored in memory (per session)
+
 chat_history = [
     {"role": "system", "content": SYSTEM_PROMPT}
 ]
-
 
 @app.route("/", methods=["GET"])
 def home():
     return render_template("index.html")
 
 
-@app.route("/start", methods=["POST"])
-def start():
-    # Collect the 5 user inputs
-    u1 = request.form.get("u1", "")
-    u2 = request.form.get("u2", "")
-    u3 = request.form.get("u3", "")
-    u4 = request.form.get("u4", "")
-    u5 = request.form.get("u5", "")
+@app.route("/start_chat", methods=["POST"])
+def start_chat():
+    # Collect user bio
+    data = request.json
+    u1 = data.get("u1", "")
+    u2 = data.get("u2", "")
+    u3 = data.get("u3", "")
+    u4 = data.get("u4", "")
+    u5 = data.get("u5", "")
 
     user_bio = f"{u1}\n{u2}\n{u3}\n{u4}\n{u5}"
-
     chat_history.append({"role": "user", "content": user_bio})
 
     response = client.chat.completions.create(
@@ -68,12 +87,13 @@ def start():
     assistant_reply = response.choices[0].message.content
     chat_history.append({"role": "assistant", "content": assistant_reply})
 
-    return render_template("chat.html", history=chat_history)
+    return jsonify({"reply": assistant_reply})
 
 
-@app.route("/message", methods=["POST"])
-def message():
-    user_msg = request.form.get("message", "")
+@app.route("/send_message", methods=["POST"])
+def send_message():
+    data = request.json
+    user_msg = data.get("message", "")
     chat_history.append({"role": "user", "content": user_msg})
 
     response = client.chat.completions.create(
@@ -84,7 +104,14 @@ def message():
     assistant_reply = response.choices[0].message.content
     chat_history.append({"role": "assistant", "content": assistant_reply})
 
-    return render_template("chat.html", history=chat_history)
+    return jsonify({"reply": assistant_reply})
+
+
+@app.route("/clear", methods=["POST"])
+def clear():
+    global chat_history
+    chat_history = [{"role": "system", "content": SYSTEM_PROMPT}]
+    return jsonify({"status": "cleared"})
 
 
 if __name__ == "__main__":
