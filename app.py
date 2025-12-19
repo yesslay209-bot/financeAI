@@ -1,9 +1,13 @@
 from flask import Flask, request, render_template, jsonify
 from openai import OpenAI
+import os
+from dotenv import load_dotenv
+
+load_dotenv
 
 app = Flask(__name__)
 
-client = OpenAI(api_key="")
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 
 # System prompt from your script
@@ -55,7 +59,7 @@ FINAL ANSWER FORMAT:
 <small, realistic steps the user can try today, <em>highlight amounts</em>><br><br>
 ------------------------------------------------
 """
-
+ 
 
 chat_history = [
     {"role": "system", "content": SYSTEM_PROMPT}
