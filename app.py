@@ -8,8 +8,8 @@ load_dotenv()
 app = Flask(__name__)
 
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-
-
+ 
+ 
 # System prompt from your script
 SYSTEM_PROMPT = """
 You are a personal finance assistant. Your job is to give clear, accurate, and beginner-friendly advice about budgeting, saving, debt control, and healthy money habits.
