@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finance Learning App</title>
+
+<!-- Poppins Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ===== Page Background ===== */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #b3d9ff, #e6f3ff);
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ===== Header ===== */
+header {
+    background-color: #1f4e79;
+    color: white;
+    width: 100%;
+    padding: 20px;
+    font-size: 1.8em;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* ===== Main Card ===== */
+.container {
+    width: 95%;
+    max-width: 900px;
+    margin-top: 30px;
+    background: white;
+    border-radius: 22px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    padding: 40px;
+}
+
+/* ===== Hero Section ===== */
+.hero {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    align-items: center;
+}
+
+.hero-text {
+    flex: 1;
+}
+
+.hero-text h1 {
+    font-size: 2.6em;
+    color: #1f4e79;
+    margin-bottom: 15px;
+}
+
+.hero-text p {
+    font-size: 1.05em;
+    color: #4a4a4a;
+    margin-bottom: 25px;
+}
+
+/* ===== Buttons ===== */
+.buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.primary-btn {
+    padding: 14px 22px;
+    background: #1f4e79;
+    color: white;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1em;
+}
+
+.secondary-btn {
+    padding: 14px 22px;
+    background: #eef4ff;
+    color: #1f4e79;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    border: 2px solid #c6d6ff;
+}
+
+/* ===== Hero Image ===== */
+.hero-image {
+    flex: 1;
+    text-align: center;
+}
+
+.hero-image img {
+    max-width: 280px;
+}
+
+/* ===== Features ===== */
+.features {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.feature {
+    flex: 1;
+    background: #f7fbff;
+    border-radius: 18px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #c6e0ff;
+}
+
+.feature h3 {
+    color: #1f4e79;
+    margin-bottom: 8px;
+}
+
+.feature p {
+    font-size: 0.95em;
+    color: #4a4a4a;
+}
+
+/* ===== Stats ===== */
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 40px;
+    text-align: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.stats h2 {
+    color: #1f4e79;
+    font-size: 2em;
+}
+
+.stats p {
+    font-size: 0.9em;
+    color: #4a4a4a;
+}
+</style>
+</head>
+
+<body>
+
+<header>Finance Learning App</header>
+
+<div class="container">
+
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-text">
+            <h1>Smart Wealth Growth</h1>
+            <p>
+                Learn budgeting, saving, and debt control in a simple,
+                friendly way — with guidance that actually makes sense.
+            </p>
+
+            <div class="buttons">
+                <a href="/" class="primary-btn">Start Learning</a>
+                <a href="#" class="secondary-btn">Fiance 101</a>
+            </div>
+        </div>
+
+        <div class="hero-image">
+            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135706.png" alt="Finance Learning">
+        </div>
+    </div>
+
+    <!-- FEATURES -->
+    <div class="features">
+        <div class="feature">
+            <h3>📘 Simple Lessons</h3>
+            <p>Easy explanations without confusing finance words.</p>
+        </div>
+        <div class="feature">
+            <h3>💬 AI Teacher</h3>
+            <p>Friendly guidance that adapts to your situation.</p>
+        </div>
+        <div class="feature">
+            <h3>💙 Safe Learning</h3>
+            <p>No judgment. Just progress at your pace.</p>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+        <div>
+            <h2>lots</h2>
+            <p>Students Helped</p>
+        </div>
+        <div>
+            <h2>24/7</h2>
+            <p>AI Support</p>
+        </div>
+        <div>
+            <h2>100%</h2>
+            <p>Beginner Friendly</p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
