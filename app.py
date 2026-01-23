@@ -117,6 +117,9 @@ def clear():
     chat_history = [{"role": "system", "content": SYSTEM_PROMPT}]
     return jsonify({"status": "cleared"})
 
+@app.route("/landing")
+def landing():
+    return render_template("landing.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
