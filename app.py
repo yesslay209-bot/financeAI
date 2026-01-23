@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, jsonify
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
+load_dotenv()
 
 load_dotenv()
 
@@ -59,7 +60,7 @@ FINAL ANSWER FORMAT:
 <small, realistic steps the user can try today, <em>highlight amounts</em>><br><br>
 ------------------------------------------------
 """
- 
+
 
 chat_history = [
     {"role": "system", "content": SYSTEM_PROMPT}
