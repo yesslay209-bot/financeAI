@@ -66,7 +66,7 @@ chat_history = [
     {"role": "system", "content": SYSTEM_PROMPT}
 ]
 
-@app.route("/", methods=["GET"])
+@app.route("/chat", methods=["GET"])
 def home():
     return render_template("index.html")
 
@@ -118,9 +118,9 @@ def clear():
     chat_history = [{"role": "system", "content": SYSTEM_PROMPT}]
     return jsonify({"status": "cleared"})
 
-@app.route("/landing")
+@app.route("/")
 def landing():
     return render_template("landing.html")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=80)
