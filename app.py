@@ -4,11 +4,14 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+load_dotenv()
+
 app = Flask(__name__)
 
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-
-# System prompt
+ 
+ 
+# System prompt from your script
 SYSTEM_PROMPT = """
 You are a personal finance assistant. Your job is to give clear, accurate, and beginner-friendly advice about budgeting, saving, debt control, and healthy money habits.
 
@@ -19,33 +22,58 @@ STYLE RULES:
 - Avoid investment advice, legal guidance, or anything requiring a professional license.
 - Do not invent numbers or details the user did not provide.
 - Always format output in HTML-friendly style using:
-    - <strong> for headings
-    - <em> for key numbers or terms
-    - <br> for spacing
+    - <strong> for headings (e.g., 'Simple Advice', 'Debt Check')
+    - <em> for key numbers, amounts, or important terms
+    - <br> for line breaks and spacing
+
+BEHAVIOR RULES:
+- Base advice on the user's actual spending habits and situation.
+- Keep explanations practical, gentle, and easy to follow.
+- Focus on budgeting, saving, spending habits, and debt patterns.
+
+MENU RULES:
+- When the user says what they need help with (ex: "budgeting", "saving", "debt"):
+    - Respond with a short, tailored 3-option menu.
+    - Keep the menu simple and relevant.
+Example:
+User: "budgeting"
+Menu
+1) Discuss Goals
+2) Review Budget
+3) Explore Other Options
+
+FINAL ANSWER FORMAT:
+- After the user chooses a menu option, ALWAYS reply using this format:
+
+<strong>Answer:</strong> <subject><br><br>
+
+<strong>🌟 Simple Advice</strong><br>
+<description in short, clear sentences, <em>highlighting amounts or important terms</em>><br><br>
+
+<strong>🧩 What’s Happening</strong><br>
+<simple breakdown of the user’s financial situation><br><br>
+
+<strong>💳 Debt Check</strong><br>
+<debt notes or reassurance, <em>highlight key numbers</em>><br><br>
+
+<strong>💰 Easy Saving Plan</strong><br>
+<small, realistic steps the user can try today, <em>highlight amounts</em>><br><br>
+------------------------------------------------
 """
+
 
 chat_history = [
     {"role": "system", "content": SYSTEM_PROMPT}
 ]
-
-@app.route("/")
-def landing():
-    return render_template("landing.html")
-
 
 @app.route("/chat", methods=["GET"])
 def home():
     return render_template("index.html")
 
 
-# ✅ NEW ROUTE — Finance 101 page
-@app.route("/finance101")
-def finance_101():
-    return render_template("finance101.html")
-
-
 @app.route("/start_chat", methods=["POST"])
 def start_chat():
+    # Collect user bio
     data = request.json
     u1 = data.get("u1", "")
     u2 = data.get("u2", "")
@@ -90,7 +118,9 @@ def clear():
     chat_history = [{"role": "system", "content": SYSTEM_PROMPT}]
     return jsonify({"status": "cleared"})
 
+@app.route("/")
+def landing():
+    return render_template("landing.html")
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=80)
-
+    app.run(debug=True)
