@@ -132,6 +132,26 @@ def clear():
     return jsonify({"status": "cleared"})
 
 # -------------------------
+# ARTICLE PAGES
+# -------------------------
+
+@app.route("/article/budgeting")
+def budgeting_article():
+    return render_template("articles/budgeting.html")
+
+@app.route("/article/debt")
+def debt_article():
+    return render_template("articles/debt.html")
+
+@app.route("/article/saving")
+def saving_article():
+    return render_template("articles/saving.html")
+
+@app.route("/article/bills")
+def bills_article():
+    return render_template("articles/bills.html")
+
+# -------------------------
 # RUN
 # -------------------------
 
