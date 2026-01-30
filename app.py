@@ -1,5 +1,4 @@
-from flask import Flask, render_template, request, jsonify, abort
-from flask import Flask, render_template, request, jsonify, abort
+from flask import Flask, render_template, request, jsonify
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
@@ -73,29 +72,25 @@ chat_history = [
     {"role": "system", "content": SYSTEM_PROMPT}
 ]
 
+# -------------------------
+# PAGES
+# -------------------------
+
 @app.route("/")
 def landing():
     return render_template("landing.html")
 
-
-@app.route("/chat", methods=["GET"])
-def home():
-    return render_template("landing.html")
-
 @app.route("/chat")
-def chat():
-    return render_template("landing.html")
-
-@app.route("/chat")
-def chat():
+def chat_page():
     return render_template("index.html")
 
-
-# ✅ NEW ROUTE — Finance 101 page
 @app.route("/finance101")
 def finance_101():
     return render_template("finance101.html")
 
+# -------------------------
+# API ROUTES
+# -------------------------
 
 @app.route("/start_chat", methods=["POST"])
 def start_chat():
@@ -103,9 +98,6 @@ def start_chat():
     bio = "\n".join(data.values())
 
     chat_history.append({"role": "user", "content": bio})
-    bio = "\n".join(data.values())
-
-    chat_history.append({"role": "user", "content": bio})
 
     response = client.chat.completions.create(
         model="gpt-4o",
@@ -114,10 +106,7 @@ def start_chat():
 
     reply = response.choices[0].message.content
     chat_history.append({"role": "assistant", "content": reply})
-    reply = response.choices[0].message.content
-    chat_history.append({"role": "assistant", "content": reply})
 
-    return jsonify({"reply": reply})
     return jsonify({"reply": reply})
 
 @app.route("/send_message", methods=["POST"])
@@ -125,9 +114,6 @@ def send_message():
     msg = request.json.get("message")
 
     chat_history.append({"role": "user", "content": msg})
-    msg = request.json.get("message")
-
-    chat_history.append({"role": "user", "content": msg})
 
     response = client.chat.completions.create(
         model="gpt-4o",
@@ -136,10 +122,7 @@ def send_message():
 
     reply = response.choices[0].message.content
     chat_history.append({"role": "assistant", "content": reply})
-    reply = response.choices[0].message.content
-    chat_history.append({"role": "assistant", "content": reply})
 
-    return jsonify({"reply": reply})
     return jsonify({"reply": reply})
 
 @app.route("/clear", methods=["POST"])
@@ -148,6 +131,9 @@ def clear():
     chat_history = [{"role": "system", "content": SYSTEM_PROMPT}]
     return jsonify({"status": "cleared"})
 
+# -------------------------
+# RUN
+# -------------------------
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=80)
