@@ -1,4 +1,5 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, render_template, request, jsonify, abort
+from flask import Flask, render_template, request, jsonify, abort
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
@@ -79,6 +80,14 @@ def landing():
 
 @app.route("/chat", methods=["GET"])
 def home():
+    return render_template("landing.html")
+
+@app.route("/chat")
+def chat():
+    return render_template("landing.html")
+
+@app.route("/chat")
+def chat():
     return render_template("index.html")
 
 
@@ -91,42 +100,47 @@ def finance_101():
 @app.route("/start_chat", methods=["POST"])
 def start_chat():
     data = request.json
-    u1 = data.get("u1", "")
-    u2 = data.get("u2", "")
-    u3 = data.get("u3", "")
-    u4 = data.get("u4", "")
-    u5 = data.get("u5", "")
+    bio = "\n".join(data.values())
 
-    user_bio = f"{u1}\n{u2}\n{u3}\n{u4}\n{u5}"
-    chat_history.append({"role": "user", "content": user_bio})
+    chat_history.append({"role": "user", "content": bio})
+    bio = "\n".join(data.values())
+
+    chat_history.append({"role": "user", "content": bio})
 
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=chat_history
     )
 
-    assistant_reply = response.choices[0].message.content
-    chat_history.append({"role": "assistant", "content": assistant_reply})
+    reply = response.choices[0].message.content
+    chat_history.append({"role": "assistant", "content": reply})
+    reply = response.choices[0].message.content
+    chat_history.append({"role": "assistant", "content": reply})
 
-    return jsonify({"reply": assistant_reply})
-
+    return jsonify({"reply": reply})
+    return jsonify({"reply": reply})
 
 @app.route("/send_message", methods=["POST"])
 def send_message():
-    data = request.json
-    user_msg = data.get("message", "")
-    chat_history.append({"role": "user", "content": user_msg})
+    msg = request.json.get("message")
+
+    chat_history.append({"role": "user", "content": msg})
+    msg = request.json.get("message")
+
+    chat_history.append({"role": "user", "content": msg})
 
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=chat_history
     )
 
-    assistant_reply = response.choices[0].message.content
-    chat_history.append({"role": "assistant", "content": assistant_reply})
+    reply = response.choices[0].message.content
+    chat_history.append({"role": "assistant", "content": reply})
+    reply = response.choices[0].message.content
+    chat_history.append({"role": "assistant", "content": reply})
 
-    return jsonify({"reply": assistant_reply})
-
+    return jsonify({"reply": reply})
+    return jsonify({"reply": reply})
 
 @app.route("/clear", methods=["POST"])
 def clear():
