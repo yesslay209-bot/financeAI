@@ -152,6 +152,35 @@ def bills_article():
     return render_template("articles/bills.html")
 
 # -------------------------
+# ARTICLE ROUTES (NEW)
+# -------------------------
+
+@app.route("/article/retirement")
+def retirement_article():
+    return render_template("articles/retirement.html")
+
+@app.route("/article/investing")
+def investing_article():
+    return render_template("articles/investing.html")
+
+@app.route("/article/interest")
+def interest_article():
+    return render_template("articles/interest.html")
+
+@app.route("/article/credit")
+def credit_article():
+    return render_template("articles/credit.html")
+
+@app.route("/article/home")
+def home_article():
+    return render_template("articles/home.html")
+
+@app.route("/article/taxes")
+def taxes_article():
+    return render_template("articles/taxes.html")
+
+
+# -------------------------
 # RUN
 # -------------------------
 
