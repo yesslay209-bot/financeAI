@@ -26,7 +26,66 @@ header {
     border-radius:22px;
     box-shadow:0 12px 30px rgba(0,0,0,0.12);
 }
-.back {color:#1f4e79;font-weight:600;cursor:pointer;}
+.back {
+    color:#1f4e79;
+    font-weight:600;
+    cursor:pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+/* --- NEW TOOL STYLES --- */
+.tool-box {
+    background: #f0fdf4; /* Light green for safety/growth */
+    border: 2px solid #1f4e79;
+    border-radius: 15px;
+    padding: 25px;
+    margin: 25px 0;
+}
+.input-group {
+    margin-bottom: 15px;
+}
+label {
+    display: block;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #1f4e79;
+}
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+.calc-btn {
+    background-color: #1f4e79;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 600;
+}
+.results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+    display: none;
+}
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+}
+.card h4 { margin: 0; color: #666; font-size: 0.8em; text-transform: uppercase; }
+.card .amount { font-size: 1.3em; color: #1f4e79; font-weight: 800; display: block; margin-top: 5px;}
 </style>
 </head>
 
@@ -36,21 +95,61 @@ header {
 
 <div class="container">
 
-<div class="back" onclick="location.href='/finance101'">← Back</div>
+<a class="back" href="/finance101">← Back to Finance 101</a>
 
 <h3>Why Save?</h3>
-<p>Saving protects you when emergencies happen and helps you reach goals.</p>
+<p>Saving protects you when emergencies happen—like a flat tire or a medical bill—and helps you reach your big dreams without stress.</p>
 
+<div class="tool-box">
+    <h3>🛡️ Safety Net Calculator</h3>
+    <p>Total your monthly bills (Rent + Food + Utilities + Car):</p>
+    
+    <div class="input-group">
+        <input type="number" id="expenses" placeholder="e.g. 2000">
+    </div>
+    
+    <button class="calc-btn" onclick="calculateSafetyNet()">Set My Goals</button>
+
+    <div id="saveResults" class="results-grid">
+        <div class="card">
+            <h4>Starter Goal</h4>
+            <span style="font-size: 0.7em;">(3 Months)</span>
+            <span class="amount" id="threeMonth">$0</span>
+        </div>
+        <div class="card">
+            <h4>Full Safety Net</h4>
+            <span style="font-size: 0.7em;">(6 Months)</span>
+            <span class="amount" id="sixMonth">$0</span>
+        </div>
+    </div>
+</div>
 <h3>Easy Way to Start</h3>
 <ul>
-<li>Save a little every week</li>
-<li>Put it somewhere you won’t spend it</li>
-<li>Increase when you can</li>
+    <li><strong>Save a little every week:</strong> Even $5 counts.</li>
+    <li><strong>Automate it:</strong> Put it somewhere you won’t spend it, like a separate savings account.</li>
+    <li><strong>Increase when you can:</strong> When you get a raise or a bonus, save a portion of it.</li>
 </ul>
 
 <h3>Power Tip</h3>
-<p>Saving small amounts consistently beats saving big amounts rarely.</p>
+<p>Saving small amounts consistently beats saving big amounts rarely. It’s about building the muscle of habit!</p>
 
 </div>
+
+<script>
+function calculateSafetyNet() {
+    const expenses = parseFloat(document.getElementById('expenses').value);
+    const resultsGrid = document.getElementById('saveResults');
+
+    if (expenses > 0) {
+        document.getElementById('threeMonth').innerText = "$" + (expenses * 3).toLocaleString();
+        document.getElementById('sixMonth').innerText = "$" + (expenses * 6).toLocaleString();
+        
+        resultsGrid.style.display = 'grid';
+    } else {
+        alert("Please enter your monthly expenses to calculate your goal.");
+    }
+}
+</script>
+
 </body>
 </html>

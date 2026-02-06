@@ -36,7 +36,58 @@ header {
     cursor: pointer;
     margin-bottom: 15px;
     display: inline-block;
+    text-decoration: none;
 }
+
+/* --- NEW TOOL STYLES --- */
+.tool-box {
+    background: #f8fbff;
+    border: 2px solid #1f4e79;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 25px 0;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+.calc-btn {
+    background-color: #1f4e79;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1em;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.calc-btn:hover {
+    background-color: #2c6ca8;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.result-row:last-child {
+    border-bottom: none;
+}
+
+.label { font-weight: 600; color: #4a4a4a; }
+.amount { color: #1f4e79; font-weight: 700; }
 </style>
 </head>
 
@@ -46,9 +97,9 @@ header {
 
 <div class="container">
 
-<div class="back" onclick="location.href='/finance101'">
+<a class="back" href="/finance101">
 ← Back to Finance 101
-</div>
+</a>
 
 <h3>What is a Budget?</h3>
 <p>
@@ -56,20 +107,59 @@ A budget is a plan for your money.
 It tells your money where to go instead of wondering where it went.
 </p>
 
+<div class="tool-box">
+    <h3>🛠️ 50/30/20 Calculator</h3>
+    <p>Enter your monthly income (after taxes) to see your ideal budget:</p>
+    
+    <input type="number" id="income" placeholder="e.g. 3000">
+    <button class="calc-btn" onclick="calculateBudget()">Calculate My Split</button>
+
+    <div id="results" style="display:none; margin-top: 20px;">
+        <div class="result-row">
+            <span class="label">🏠 Needs (50%):</span>
+            <span class="amount" id="needs">$0</span>
+        </div>
+        <div class="result-row">
+            <span class="label">🍕 Wants (30%):</span>
+            <span class="amount" id="wants">$0</span>
+        </div>
+        <div class="result-row">
+            <span class="label">💰 Savings/Debt (20%):</span>
+            <span class="amount" id="savings">$0</span>
+        </div>
+    </div>
+</div>
 <h3>Simple Budget Categories</h3>
 <ul>
-<li>Income (money you earn)</li>
-<li>Needs (rent, food, bills)</li>
-<li>Wants (fun, games, eating out)</li>
-<li>Savings (money you keep)</li>
+<li><strong>Income:</strong> Money you earn from work or side gigs.</li>
+<li><strong>Needs:</strong> Things you must pay (rent, utilities, groceries).</li>
+<li><strong>Wants:</strong> Things you enjoy (movies, dining out, hobbies).</li>
+<li><strong>Savings:</strong> Money for your future self or emergencies.</li>
 </ul>
 
 <h3>Easy Starter Tip</h3>
 <p>
-Save even $10 a week. Small habits grow into big money.
+Save even <em>$10 a week</em>. Small habits grow into big money. Consistency is more important than the amount when you're just starting.
 </p>
 
 </div>
+
+<script>
+function calculateBudget() {
+    const income = document.getElementById('income').value;
+    const resultsDiv = document.getElementById('results');
+
+    if (income && income > 0) {
+        document.getElementById('needs').innerText = "$" + (income * 0.50).toLocaleString(undefined, {minimumFractionDigits: 2});
+        document.getElementById('wants').innerText = "$" + (income * 0.30).toLocaleString(undefined, {minimumFractionDigits: 2});
+        document.getElementById('savings').innerText = "$" + (income * 0.20).toLocaleString(undefined, {minimumFractionDigits: 2});
+        
+        resultsDiv.style.display = 'block';
+    } else {
+        alert("Please enter a valid monthly income.");
+    }
+}
+</script>
 
 </body>
 </html>

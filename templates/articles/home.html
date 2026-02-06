@@ -12,7 +12,50 @@ header{background:#1f4e79;color:#fff;padding:18px;text-align:center;font-size:1.
 .section h2{color:#1f4e79;}
 .section p{color:#4a4a4a;line-height:1.6;}
 .highlight{background:#f1f7ff;border-left:5px solid #1f4e79;padding:14px 18px;border-radius:10px;}
-.back{margin-top:20px;display:inline-block;color:#1f4e79;text-decoration:none;}
+.back{margin-top:20px;display:inline-block;color:#1f4e79;text-decoration:none;font-weight:600;}
+
+/* --- NEW TOOL STYLES --- */
+.tool-box {
+    background: #fdf8ff; /* Light purple tint */
+    border: 2px solid #1f4e79;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 25px 0;
+}
+input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+.calc-btn {
+    background-color: #1f4e79;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 600;
+    font-size: 1em;
+}
+.result-display {
+    margin-top: 20px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    display: none;
+}
+.res-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+}
+.res-val { color: #1f4e79; font-weight: 700; }
 </style>
 </head>
 
@@ -20,23 +63,64 @@ header{background:#1f4e79;color:#fff;padding:18px;text-align:center;font-size:1.
 <header>Planning to Own a Home</header>
 
 <div class="container">
-    <div class="section">
-        <h2>What Homeownership Involves</h2>
-        <p>Owning a home includes payments, maintenance, and unexpected costs.</p>
-    </div>
+    <a class="back" href="/finance101">← Back to Finance 101</a>
 
     <div class="section">
+        <h2>What Homeownership Involves</h2>
+        <p>Owning a home includes monthly mortgage payments, property taxes, insurance, and maintenance costs.</p>
+    </div>
+
+    <div class="tool-box">
+        <h3>🏠 Affordability Calculator</h3>
+        <p>A common rule is to look for homes that cost about <strong>3x your annual income</strong>.</p>
+        
+        <label>Your Total Yearly Income ($):</label>
+        <input type="number" id="annualSalary" placeholder="e.g. 60000">
+        
+        <button class="calc-btn" onclick="checkAffordability()">Calculate Budget</button>
+
+        <div id="homeResults" class="result-display">
+            <div class="res-line">
+                <span>Suggested Home Price:</span>
+                <span class="res-val" id="maxPrice">$0</span>
+            </div>
+            <div class="res-line" style="font-size: 0.9em; color: #666;">
+                <span>20% Down Payment Goal:</span>
+                <span id="downPayment">$0</span>
+            </div>
+            <p style="font-size: 0.8em; margin-top: 10px; color: #888;">
+                *This is a general guide. Your specific debts and local taxes will vary.
+            </p>
+        </div>
+    </div>
+    <div class="section">
         <h2>Before You Start</h2>
-        <p>Stable income and savings help reduce stress later.</p>
+        <p>Stable income and a solid emergency fund help reduce the stress of homeownership. Lenders also look closely at your credit score and current debt levels.</p>
     </div>
 
     <div class="highlight">
         <strong>Planning Tip:</strong><br>
-        Start by tracking housing-related expenses.
+        Start a "Hidden Costs" fund. Experts suggest saving 1% of the home's value every year for repairs and maintenance.
     </div>
-
-    <a class="back" href="/finance101">← Back to Finance 101</a>
 </div>
+
+<script>
+function checkAffordability() {
+    const salary = parseFloat(document.getElementById('annualSalary').value);
+    const resultsDiv = document.getElementById('homeResults');
+
+    if (salary > 0) {
+        const affordablePrice = salary * 3;
+        const downPayment = affordablePrice * 0.20;
+
+        document.getElementById('maxPrice').innerText = "$" + affordablePrice.toLocaleString();
+        document.getElementById('downPayment').innerText = "$" + downPayment.toLocaleString();
+        
+        resultsDiv.style.display = 'block';
+    } else {
+        alert("Please enter your annual income to see the estimate.");
+    }
+}
+</script>
 </body>
 </html>
-

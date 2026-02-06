@@ -12,7 +12,48 @@ header{background:#1f4e79;color:#fff;padding:18px;text-align:center;font-size:1.
 .section h2{color:#1f4e79;}
 .section p{color:#4a4a4a;line-height:1.6;}
 .highlight{background:#f1f7ff;border-left:5px solid #1f4e79;padding:14px 18px;border-radius:10px;}
-.back{margin-top:20px;display:inline-block;color:#1f4e79;text-decoration:none;}
+.back{margin-top:20px;display:inline-block;color:#1f4e79;text-decoration:none; font-weight: 600;}
+
+/* TOOL STYLES */
+.tool-box {
+    background: #fffdf2; /* Light gold tint for 'wealth' */
+    border: 2px dashed #1f4e79;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 25px 0;
+}
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+.calc-btn {
+    background-color: #1f4e79;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 600;
+}
+.result-display {
+    margin-top: 20px;
+    text-align: center;
+    padding: 15px;
+    background: #e6f3ff;
+    border-radius: 10px;
+    display: none;
+}
+.big-number {
+    font-size: 1.5em;
+    display: block;
+    color: #1f4e79;
+    font-weight: 800;
+}
 </style>
 </head>
 
@@ -20,23 +61,68 @@ header{background:#1f4e79;color:#fff;padding:18px;text-align:center;font-size:1.
 <header>Interest Rates Explained</header>
 
 <div class="container">
-    <div class="section">
-        <h2>What Interest Is</h2>
-        <p>Interest is the cost of borrowing money or the reward for saving it.</p>
-    </div>
+    <a class="back" href="/finance101">← Back to Finance 101</a>
 
     <div class="section">
+        <h2>What Interest Is</h2>
+        <p>Interest is the cost of borrowing money or the reward for saving it. Think of it as "rent" for using someone else's cash.</p>
+    </div>
+
+    <div class="tool-box">
+        <h3>⏳ The Power of Time</h3>
+        <p>See how much your money grows in <strong>10 years</strong> with compound interest.</p>
+        
+        <label>Monthly Savings ($):</label>
+        <input type="number" id="monthly" placeholder="e.g. 100">
+        
+        <label>Annual Interest Rate (%):</label>
+        <input type="number" id="rate" placeholder="e.g. 5">
+        
+        <button class="calc-btn" onclick="calculateGrowth()">Visualize My Growth</button>
+
+        <div id="growthResult" class="result-display">
+            <p>In 10 years, you would have:</p>
+            <span class="big-number" id="totalValue">$0.00</span>
+            <p style="font-size: 0.9em; color: #666;">Total invested: <span id="totalInvested"></span></p>
+        </div>
+    </div>
+    <div class="section">
         <h2>Why It Matters</h2>
-        <p>Higher interest means loans cost more and savings grow faster.</p>
+        <p>Higher interest means loans cost more and savings grow faster. Even a 1% difference can change your balance by thousands over time.</p>
     </div>
 
     <div class="highlight">
         <strong>Helpful Habit:</strong><br>
-        Avoid high-interest debt when possible.
+        Avoid high-interest debt like credit cards (often 20%+) while letting your savings grow in accounts that pay you back.
     </div>
-
-    <a class="back" href="/finance101">← Back to Finance 101</a>
 </div>
+
+<script>
+function calculateGrowth() {
+    const pmt = parseFloat(document.getElementById('monthly').value);
+    const annualRate = parseFloat(document.getElementById('rate').value) / 100;
+    const months = 120; // 10 years
+    const r = annualRate / 12; // monthly rate
+
+    if (pmt > 0 && annualRate >= 0) {
+        // Formula: A = PMT * (((1 + r)^n - 1) / r)
+        let total;
+        if (r === 0) {
+            total = pmt * months;
+        } else {
+            total = pmt * ( (Math.pow(1 + r, months) - 1) / r );
+        }
+
+        const invested = pmt * months;
+
+        document.getElementById('totalValue').innerText = "$" + total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        document.getElementById('totalInvested').innerText = "$" + invested.toLocaleString();
+        document.getElementById('growthResult').style.display = 'block';
+    } else {
+        alert("Please enter valid positive numbers!");
+    }
+}
+</script>
 </body>
 </html>
 
